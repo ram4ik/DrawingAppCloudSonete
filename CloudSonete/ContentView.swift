@@ -5,17 +5,33 @@
 //  Created by admin on 10/26/24.
 //
 
+import PencilKit
 import SwiftUI
 
 struct ContentView: View {
+    @StateObject private var viewModel = DrawingViewModel()
+
     var body: some View {
-        VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundStyle(.tint)
-            Text("Hello, world!")
+        NavigationView {
+            ZStack {
+                DrawingCanvasView(canvasView: $viewModel.canvasView)
+                    .ignoresSafeArea()
+
+                VStack {
+                    Spacer()
+                    ToolbarView(viewModel: viewModel)
+                }
+            }
+            .navigationTitle("Drawing App")
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    Button(action: viewModel.clearCanvas) {
+                        Image(systemName: "trash")
+                    }
+                }
+            }
         }
-        .padding()
     }
 }
 
